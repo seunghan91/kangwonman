@@ -1,0 +1,61 @@
+<html>
+<head>
+  <title>트위터 만들기</title>
+  <!-- 합쳐지고 최소화된 최신 CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  
+  <!-- 부가적인 테마 -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+  
+  <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <style>
+  @import url(http://fonts.googleapis.com/earlyaccess/jejuhallasan.css)
+  </style>
+</head>
+<body>
+<p style="font-size: 100px; text-align: center; font-family: 'Jeju Hallasan', serif;">여긴 내 공간이다. by seunghan</p>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3" style="text-align: center">
+  <br>
+    <table class="table table-bordered">
+      <thead>
+        <tr class="warning">
+          <th style="text-align: center;">내 용</th>
+          <th style="text-align: center;">작 성 자</th>
+          <th style="text-align: center;">수 정 / 댓 글 / 삭 제</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @posts.reverse_each do |p| %>
+        <tr>
+          <td style="width: 50%; text-align: left">&nbsp&nbsp<%= p.post_content %></td>
+          <td style="width: 15%"><%= p.post_username %></td>
+          <td style="width: 35%"><button class="btn btn-default" onclick="location.href='/powerade/password_input?id=<%=p.id%>&mode=modify'">수정</button>
+                                 <button class="btn btn-default" onclick="location.href='/powerade/reply?id=<%=p.id%>'">댓글</button>
+                                 <button class="btn btn-default" onclick="location.href='/powerade/password_input?id=<%=p.id%>&mode=delete'">삭제</button></td>
+        </tr>
+          <%p.replies.each do |r| %>
+            <tr class="success">
+              <td style="width: 50%; text-align: left">&nbsp&nbsp&nbsp&nbsp --> <%= r.d_reply%></td>
+              <td style="width: 15%"><%= r.d_name%>
+              <td style="width: 35%">
+                  <button class="btn btn-default" onclick="location.href='/powerade/password_input?id=<%=r.id%>&mode=reply_modify'">수정</button>
+                  <button class="btn btn-default" onclick="location.href='/powerade/password_input?id=<%=r.id%>&mode=reply_delete'">삭제</button></td>
+            </tr>
+          <% end %>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+    <br/><br/>
+    <form action="/powerade/write" method="POST" style="text-align: center">
+      Name : <input type="text" name="author_name" required/><br/><br/>
+      Password : <input type="password" name="password" required/><br/><br/>
+      Content : 
+      <textarea row="4" cols="50" name="content"></textarea><br/><br/>
+      <button type="submit" class="btn btn-default">작성</button>
+    </form>
+</body>
+</html>
